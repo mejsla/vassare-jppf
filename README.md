@@ -1,6 +1,6 @@
 # Distribuerade beräkningar med JPPF
 
-Tips för att labba med [JPPF](https://www.jppf.org) på Mejslas vässardag 2019-01-23.
+Tips för att labba med [JPPF](https://www.jppf.org) på Mejslas vässardag 2020-01-23.
 
 
 ## Komma igång med labben
