@@ -64,13 +64,13 @@ public class TemplateApplicationRunner {
             final TemplateApplicationRunner runner = new TemplateApplicationRunner();
 
             // create and execute a blocking job
-            //runner.executeBlockingJob(jppfClient);
+            runner.executeBlockingJob(jppfClient);
 
             // create and execute a non-blocking job
             //runner.executeNonBlockingJob(jppfClient);
 
             // create and execute 3 jobs concurrently
-            runner.executeMultipleConcurrentJobs(jppfClient, 3);
+            //runner.executeMultipleConcurrentJobs(jppfClient, 3);
 
         } catch (final Exception e) {
             e.printStackTrace();
@@ -92,7 +92,7 @@ public class TemplateApplicationRunner {
 
         // add a task to the job.
         String taskId = jobName + " - Template task";
-        final Task<?> task = job.add(new ListFilesTask(taskId, "."));
+        final Task<?> task = job.add(new SimpleTask(taskId));
         // provide a user-defined name for the task
         task.setId(taskId);
 
