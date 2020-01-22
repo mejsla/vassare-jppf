@@ -20,6 +20,8 @@ package se.mejsla.vassare.jppf.client;
 import org.jppf.client.JPPFClient;
 import org.jppf.client.JPPFConnectionPool;
 import org.jppf.client.JPPFJob;
+import org.jppf.node.policy.AtLeast;
+import org.jppf.node.policy.ExecutionPolicy;
 import org.jppf.node.protocol.Task;
 import org.jppf.utils.Operator;
 import org.slf4j.Logger;
@@ -92,6 +94,38 @@ public class TemplateApplicationRunner {
 
         // add a task to the job.
         String taskId = jobName + " - Template task";
+        final Task<?> task = job.add(new SimpleTask(taskId));
+        // provide a user-defined name for the task
+        task.setId(taskId);
+
+        // add more tasks here ...
+
+        // there is no guarantee on the order of execution of the tasks,
+        // however the results are guaranteed to be returned in the same order as the tasks.
+        return job;
+    }
+
+    /**
+     * Create a JPPF job with a server-side SLA that can be submitted for execution.
+     * The SLA contains an execution policy that specifies a minimum number of threads
+     * a node must have to be given this job.
+     *
+     * @param jobName an arbitrary, human-readable name given to the job.
+     * @return an instance of the {@link org.jppf.client.JPPFJob JPPFJob} class.
+     * @throws Exception if an error occurs while creating the job or adding tasks.
+     */
+    public JPPFJob createJobWithSLA(final String jobName) throws Exception {
+        // create a JPPF job
+        final JPPFJob job = new JPPFJob();
+        // give this job a readable name that we can use to monitor and manage it.
+        job.setName(jobName);
+
+        // execute on nodes that have at least 4 threads
+        ExecutionPolicy serverPolicy = new AtLeast("jppf.processing.threads", 4);
+        job.getSLA().setExecutionPolicy(serverPolicy);
+
+        // add a task to the job.
+        String taskId = jobName + " - Template task with SLA";
         final Task<?> task = job.add(new SimpleTask(taskId));
         // provide a user-defined name for the task
         task.setId(taskId);
